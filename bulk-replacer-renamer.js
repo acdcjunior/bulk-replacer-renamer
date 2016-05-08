@@ -77,7 +77,7 @@ function outputFunction(silent) {
     }
 }
 
-var defaultFileEncoding = 'utf8';
+var DEFAULT_FILE_ENCODING = 'utf8';
 
 /**
  *
@@ -103,7 +103,7 @@ function bulkReplacerRenamer(baseDir, searchRegex, replaceTerm, options) {
     var searchAndReplaceTerms = {searchRegex: searchRegex, replaceTerm: replaceTerm};
     var resolvedOutputFunction = outputFunction(options.silent);
     filesToReplaceAndOrRename.forEach(function (filePath) {
-        // replaceFileContent(filePath, searchAndReplaceTerms, options.fileEncoding || defaultFileEncoding, resolvedOutputFunction);
+        replaceFileContent(filePath, searchAndReplaceTerms, options.fileEncoding || DEFAULT_FILE_ENCODING, resolvedOutputFunction);
         replaceFileName(filePath, searchAndReplaceTerms, resolvedOutputFunction, options.gitRoot);
     });
 }
