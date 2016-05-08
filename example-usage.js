@@ -25,3 +25,5 @@ searchAndReplaceTermsList.forEach(function (searchAndReplaceTerms) {
         }
     )
 });
+
+console.log("After executing this script, take a look at the /test/ folder diff through git.");
