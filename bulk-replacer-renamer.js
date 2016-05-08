@@ -27,8 +27,8 @@ function ensurePathExists(filePath) {
 function renameFile(srcPath, targetPath, gitRoot) {
     ensurePathExists(targetPath);
     if (gitRoot) {
-        var comandoGit = 'git  --work-tree=' + gitRoot + ' mv ' + srcPath + ' ' + targetPath;
-        execSync(comandoGit);
+        var gitMV = 'git --git-dir="' + gitRoot + '/.git" --work-tree="' + gitRoot + '" mv "' + srcPath + '" "' + targetPath + '"';
+        execSync(gitMV);
     } else {
         fs.renameSync(srcPath, targetPath);
     }
@@ -53,7 +53,7 @@ function replaceFileContent(filePath, searchAndReplaceTerms, fileEncoding, outpu
     var replacedContent = originalContent.replace(searchAndReplaceTerms.searchRegex, searchAndReplaceTerms.replaceTerm);
     
     if (originalContent !== replacedContent) {
-        outputFunction("changed content: " + filePath);
+        outputFunction("changing content: " + filePath);
         fs.writeFileSync(filePath, replacedContent, fileEncoding);
     }
 }
@@ -62,7 +62,7 @@ function replaceFileName(filePath, searchAndReplaceTerms, outputFunction, gitRoo
     var replacedFilePath = filePath.replace(searchAndReplaceTerms.searchRegex, searchAndReplaceTerms.replaceTerm);
 
     if (filePath !== replacedFilePath) {
-        outputFunction("changed name...: " + filePath + " -> " + replacedFilePath);
+        outputFunction("changing name...: " + filePath + " -> " + replacedFilePath);
         renameFile(filePath, replacedFilePath, gitRoot);
     }
 }
@@ -103,7 +103,7 @@ function bulkReplacerRenamer(baseDir, searchRegex, replaceTerm, options) {
     var searchAndReplaceTerms = {searchRegex: searchRegex, replaceTerm: replaceTerm};
     var resolvedOutputFunction = outputFunction(options.silent);
     filesToReplaceAndOrRename.forEach(function (filePath) {
-        replaceFileContent(filePath, searchAndReplaceTerms, options.fileEncoding || defaultFileEncoding, resolvedOutputFunction);
+        // replaceFileContent(filePath, searchAndReplaceTerms, options.fileEncoding || defaultFileEncoding, resolvedOutputFunction);
         replaceFileName(filePath, searchAndReplaceTerms, resolvedOutputFunction, options.gitRoot);
     });
 }
