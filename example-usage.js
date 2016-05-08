@@ -1,7 +1,7 @@
 var bulkReplacerRenamer = require('./bulk-replacer-renamer');
 
 var gitRoot = __dirname;
-var diretorioBASE = require('path').join(__dirname, "/test");
+var baseDir = require('path').join(__dirname, "/test");
 
 var seed = {regex: 'Stuff', replace: 'SumthingElse'};
 
@@ -14,7 +14,7 @@ var fileExtensionsToReplace = ["java", "js", "html", "css", "vm"];
 
 searchAndReplaceTermsList.forEach(function (searchAndReplaceTerms) {
     bulkReplacerRenamer(
-        diretorioBASE,
+        baseDir,
         searchAndReplaceTerms.searchRegex,
         searchAndReplaceTerms.replaceTerm,
         {
