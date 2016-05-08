@@ -48,21 +48,32 @@ function fileHasExtension(filePath, fileExtensions) {
     return fileExtensions.indexOf(fileExtension) !== -1;
 }
 
-function replaceFileContent(filePath, searchAndReplaceTerms) {
-    var originalContent = fs.readFileSync(filePath, 'utf8');
+function replaceFileContent(filePath, searchAndReplaceTerms, fileEncoding, outputFunction) {
+    var originalContent = fs.readFileSync(filePath, fileEncoding);
     var replacedContent = originalContent.replace(searchAndReplaceTerms.searchRegex, searchAndReplaceTerms.replaceTerm);
     
     if (originalContent !== replacedContent) {
-        fs.writeFileSync(filePath, replacedContent, 'utf8');
+        outputFunction("changed content: " + filePath);
+        fs.writeFileSync(filePath, replacedContent, fileEncoding);
     }
 }
 
-function replaceFileName(filePath, searchAndReplaceTerms, gitRoot) {
+function replaceFileName(filePath, searchAndReplaceTerms, outputFunction, gitRoot) {
     var replacedFilePath = filePath.replace(searchAndReplaceTerms.searchRegex, searchAndReplaceTerms.replaceTerm);
 
     if (filePath !== replacedFilePath) {
-        console.log("mv " + filePath + " -> " + replacedFilePath);
+        outputFunction("changed name...: " + filePath + " -> " + replacedFilePath);
         renameFile(filePath, replacedFilePath, gitRoot);
+    }
+}
+
+function outputFunction(silent) {
+    if (!silent) {
+        return function () {
+            console.log.apply(this, arguments);
+        };
+    } else {
+        return function () {};
     }
 }
 
@@ -76,7 +87,8 @@ var defaultFileEncoding = 'utf8';
  * @param options object { 
  *      fileExtensionsToReplace: (optional) Array of extensions. e.g. ["java", "js", "html", "css"],
  *      gitRoot: (optional) a dir, where supposedly the git repo is at. if specified the renames will be done using "git mv",
- *      fileEncoding: (optional) default is 'utf8'
+ *      fileEncoding: (optional) default is 'utf8',
+ *      silent: (optional) if it should print what it is doing
  * }      
  */
 function bulkReplacerRenamer(baseDir, searchRegex, replaceTerm, options) {
@@ -89,9 +101,10 @@ function bulkReplacerRenamer(baseDir, searchRegex, replaceTerm, options) {
     });
 
     var searchAndReplaceTerms = {searchRegex: searchRegex, replaceTerm: replaceTerm};
+    var resolvedOutputFunction = outputFunction(options.silent);
     filesToReplaceAndOrRename.forEach(function (filePath) {
-        replaceFileContent(filePath, searchAndReplaceTerms, options.fileEncoding || defaultFileEncoding);
-        replaceFileName(filePath, searchAndReplaceTerms, options.gitRoot);
+        replaceFileContent(filePath, searchAndReplaceTerms, options.fileEncoding || defaultFileEncoding, resolvedOutputFunction);
+        replaceFileName(filePath, searchAndReplaceTerms, resolvedOutputFunction, options.gitRoot);
     });
 }
 

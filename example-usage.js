@@ -20,7 +20,8 @@ searchAndReplaceTermsList.forEach(function (searchAndReplaceTerms) {
         {
             fileExtensionsToReplace: fileExtensionsToReplace,
             gitRoot: gitRoot,
-            fileEncoding: 'utf8'
+            fileEncoding: 'utf8',
+            silent: false
         }
     )
 });
