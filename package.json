@@ -1,0 +1,35 @@
+{
+  "name": "bulk-replacer-renamer",
+  "version": "1.0.0",
+  "description": "Simple script that replaces a term in content and in names (renames) of all files of a given folder (and its subfolders)",
+  "main": "bulk-replacer-renamer.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "mkdirp": "^0.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/acdcjunior/bulk-replacer-renamer.git"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "bulk",
+    "replacer",
+    "renamer",
+    "git",
+    "mv"
+  ],
+  "author": "acdcjunior",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/acdcjunior/bulk-replacer-renamer/issues"
+  },
+  "homepage": "https://github.com/acdcjunior/bulk-replacer-renamer#readme"
+}
